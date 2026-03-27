@@ -1,0 +1,85 @@
+.dashbord-container button {
+    width: 150px;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashbord-container .btn1 {
+    background-color: #0d6efd;
+}
+
+.dashbord-container .btn2 {
+    background-color: #198754;
+}
+
+.dashbord-container .btn3 {
+    background-color: #dc3545;
+}
+
+.dashbord-container .btn4 {
+    background-color: #fd7e14;
+}
+
+.dashbord-container .btn5 {
+    background-color: #20c997;
+}
+
+.dashbord-container .btn6 {
+    background-color: #6610f2;
+}
+
+.dashbord-container .btn7 {
+    background-color: #6f42c1;
+}
+
+.dashbord-container .btn8 {
+    background-color: #0dcaf0;
+}
+
+.dashbord-container .btn9 {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.dashbord-container .btn10 {
+    background-color: #198754;
+}
+
+.dashbord-container button:hover {
+    transform: translateY(-5px);
+    opacity: 0.9;
+}
+
+.imgescorosal {
+    height: 530px;
+}
+
+.carousel-item img {
+    height: 530px;
+    object-fit: cover;
+    width: 100%;
+}
+
+
+.footer-details {
+    margin-top: 50px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .imgescorosal {
+        height: 400px;
+    }
+
+    .carousel-item img {
+        height: 400px;
+        object-fit: cover;
+        width: 100%;
+    }
+}
