@@ -12,6 +12,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    const role = localStorage.getItem("role");
     const CLASS_URLS = [
       'http://localhost:2001/api/firstclass/Firstclassstudents',
       'http://localhost:2001/api/secondclass/Secondclassstudents',
@@ -30,7 +32,12 @@ const Dashboard = () => {
       try {
         setLoading(true);
         const fetches = CLASS_URLS.map(url =>
-          fetch(url).then(res => res.json().catch(() => []))
+          fetch(url, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              "role" : role
+            }
+          }).then(res => res.json().catch(() => []))
         );
         const allClassData = await Promise.all(fetches);
         const classStats = CLASS_URLS.map((url, index) => {

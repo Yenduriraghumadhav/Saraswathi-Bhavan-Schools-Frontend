@@ -78,6 +78,14 @@ textarea {
   min-height: 120px;
 }
 
+.image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 2px solid #e2e8f0;
+}
+
 .radio-group {
   display: flex;
   gap: 30px;

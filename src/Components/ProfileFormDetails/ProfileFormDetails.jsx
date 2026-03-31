@@ -14,13 +14,22 @@ const ProfileFormDetails = () => {
     stdphoneNumber: "",
     stdpassword: "",
     stdaddress: "",
-    stdgender: ""
+    stdgender: "",
+    stdImage: null
   });
 
   const [errors, setErrors] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
 
   const personalDetails = (e) => {
-    const { name, value } = e.target;
+    const { name, type, value, files } = e.target;
+    if (type === 'file') {
+      const file = files[0] || null;
+      setUserDetails((prev) => ({ ...prev, [name]: file }));
+      setImagePreview(file ? URL.createObjectURL(file) : null);
+      return;
+    }
+
     setUserDetails({
       ...userDetails,
       [name]: value
@@ -71,12 +80,37 @@ const ProfileFormDetails = () => {
     }
 
     try {
+      const formData = new FormData();
+      Object.entries(userDetails).forEach(([key, value]) => {
+        if (value !== null) {
+          formData.append(key, value);
+        }
+      });
+
       const response = await axios.post(
         "http://localhost:2001/api/userstudentdetails/StudentDetails",
-        userDetails
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       );
       console.log(response.data);
       alert("Thank you");
+      setUserDetails({
+        stdname: "",
+        stdfathername: "",
+        stdmothername: "",
+        stdemail: "",
+        stdrollNumber: "",
+        stdphoneNumber: "",
+        stdpassword: "",
+        stdaddress: "",
+        stdgender: "",
+        stdImage: null
+      });
+      setImagePreview(null);
       navigate('/login');
     } catch (error) {
       console.error(error);
@@ -118,6 +152,15 @@ const ProfileFormDetails = () => {
               autoComplete="new-email"
             />
             {errors.stdemail && <span className='errorText'>{errors.stdemail}</span>}
+            <input
+              type="file"
+              name="stdImage"
+              accept="image/*"
+              onChange={personalDetails}
+            />
+            {imagePreview && (
+              <img src={imagePreview} alt="Profile preview" className="image-preview" />
+            )}
             <input
               name="stdrollNumber"
               placeholder='Enter Roll Number'

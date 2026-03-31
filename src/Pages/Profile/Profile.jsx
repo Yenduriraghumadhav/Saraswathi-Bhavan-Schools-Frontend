@@ -1,79 +1,114 @@
-import React, { useState , } from 'react';
+import React, { useState, useEffect } from 'react';
 import './profile.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [profileImg, setProfileImg] = useState("https://cdn-icons-png.flaticon.com/512/3135/3135715.png");
+  const [avatarUrl, setAvatarUrl] = useState('https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
+  const [role, setRole] = useState('student');
+  const [profileData, setProfileData] = useState({
+    fullName: '',
+    email: '',
+    mobileNumber: '',
+    rollNumber: '',
+    address: ''
+  });
+  const navigate = useNavigate();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfileImg(URL.createObjectURL(file));
-    }
+
+
+  useEffect(() => {
+    const raw = localStorage.getItem("user");
+    console.log("RAW:", raw);
+
+    const savedUser = JSON.parse(raw);
+    console.log("PARSED:", savedUser);
+
+    if (!savedUser) return;
+
+    setRole(savedUser.role || "student");
+
+    setProfileData({
+      fullName: savedUser.stdname || savedUser.TeacherName || savedUser.name || "",
+      email: savedUser.stdemail || savedUser.TeacherEmail || savedUser.email || "",
+      mobileNumber: savedUser.stdphoneNumber || savedUser.TeacherPhone || savedUser.mobile || "",
+      rollNumber: savedUser.stdrollNumber || "",
+      address: savedUser.TeacherAddress || ""
+    });
+
+    setAvatarUrl(
+      savedUser.stdImage ||
+      savedUser.TeacherImage ||
+      savedUser.profilePic ||
+      "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+    );
+  }, []);
+
+  const handleInputChange = (field) => (event) => {
+    setProfileData((prev) => ({
+      ...prev,
+      [field]: event.target.value
+    }));
   };
 
+  const handleSave = (event) => {
+    event.preventDefault();
+    localStorage.setItem("user", JSON.stringify({
+      ...JSON.parse(localStorage.getItem("user")),
+      ...profileData
+    }));
+    alert("Profile updated");
+  };
 
-
-    
+  const handleLogout = () => {
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    console.log('🚫 After removal - token:', localStorage.getItem("jwtToken"));
+    navigate("/login");
+  };
 
   return (
-    <div className={`profile-page ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className="profile-page">
       <div className="profile-card">
-
-        {/* Header with Theme Toggle */}
-        <div className="card-header">
-          <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? (
-              <i className="fa-solid fa-moon"></i>
-            ) : (
-              <i className="fa-solid fa-moon"></i>
-            )}
-          </button>
-
-        </div>
-
-        {/* Profile Image Section */}
         <div className="avatar-section">
           <div className="avatar-wrapper">
-            <img src={profileImg} alt="User Avatar" className="avatar-img" />
-            <label htmlFor="file-input" className="edit-icon">
-              <i className="bi bi-pencil-fill"></i>
-            </label>
-            <input id="file-input" type="file" onChange={handleImageChange} hidden />
+            <img className="avatar-img" src={avatarUrl} alt="User Avatar" />
           </div>
-          <h2>My Profile</h2>
-          <p className="subtitle">Update your personal information</p>
         </div>
 
-        {/* Form Fields */}
-        <form className="profile-form">
-          <div className="form-row">
+        <form className="profile-form" onSubmit={handleSave}>
+          <div className="input-box">
+            <label>Full Name</label>
+            <input type="text" value={profileData.fullName} onChange={handleInputChange('fullName')} />
+          </div>
+
+          <div className="input-box">
+            <label>Email</label>
+            <input type="email" value={profileData.email} onChange={handleInputChange('email')} />
+          </div>
+
+          <div className="input-box">
+            <label>Mobile</label>
+            <input type="tel" value={profileData.mobileNumber} onChange={handleInputChange('mobileNumber')} />
+          </div>
+
+          {role === "teacher" ? (
             <div className="input-box">
-              <label>Full Name</label>
-              <input type="text" placeholder="First Name" />
+              <label>Address</label>
+              <input type="text" value={profileData.address} onChange={handleInputChange('address')} />
             </div>
-          </div>
-
-          <div className="input-box">
-            <label>Email Address</label>
-            <input type="email" placeholder="Email Address" />
-          </div>
-
-          <div className="input-box">
-            <label>Mobile Number</label>
-            <input type="" placeholder="Mobile Number" />
-          </div>
-
-          <div className="input-box">
-            <label>RollNumber</label>
-            <input type="text" placeholder="Roll Number" />
-          </div>
+          ) : (
+            <div className="input-box">
+              <label>Roll Number</label>
+              <input type="text" value={profileData.rollNumber} onChange={handleInputChange('rollNumber')} />
+            </div>
+          )}
 
           <div className="form-actions">
-            <button type="submit" className="save-btn">Save Changes</button>
-            <button type="button" className="logout-btn">
-              <i className="bi bi-box-arrow-right"></i> Logout
+            {/* <button type="submit" className="save-btn">Save</button> */}
+            <button type="button" className="logout-btn" onClick={handleLogout}>
+              Logout
             </button>
           </div>
         </form>

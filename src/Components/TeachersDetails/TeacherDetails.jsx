@@ -9,21 +9,48 @@ const TeacherDetails = () => {
     TeacherPhone: '',
     TeacherAddress: '',
     TeacherPassword: '',
-    TeacherGender: ''
+    TeacherGender: '',
+    TeacherImage: null
   });
   const [loading, setLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, type, value, files } = e.target;
+    if (type === 'file') {
+      const file = files[0] || null;
+      setFormData((prev) => ({ ...prev, [name]: file }));
+      setImagePreview(file ? URL.createObjectURL(file) : null);
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:2001/api/userteacherdetails/TeacherDetails', formData);
+      const submitData = new FormData();
+      submitData.append('TeacherName', formData.TeacherName);
+      submitData.append('TeacherEmail', formData.TeacherEmail);
+      submitData.append('TeacherPhone', formData.TeacherPhone);
+      submitData.append('TeacherAddress', formData.TeacherAddress);
+      submitData.append('TeacherPassword', formData.TeacherPassword);
+      submitData.append('TeacherGender', formData.TeacherGender);
+      if (formData.TeacherImage) {
+        submitData.append('TeacherImage', formData.TeacherImage);
+      }
+
+      await axios.post('http://localhost:2001/api/userteacherdetails/TeacherDetails', submitData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
       alert('Teacher saved successfully!');
-      setFormData({ TeacherName: '', TeacherEmail: '', TeacherPhone: '', TeacherAddress: '', TeacherPassword: '', TeacherSubject: '', TeacherGender: '' });
+      setFormData({ TeacherName: '', TeacherEmail: '', TeacherPhone: '', TeacherAddress: '', TeacherPassword: '', TeacherGender: '', TeacherImage: null });
+      setImagePreview(null);
     } catch (error) {
       alert('Error saving teacher: ' + (error.response?.data?.message || 'Try again'));
     } finally {
@@ -34,7 +61,7 @@ const TeacherDetails = () => {
   return (
     <div className="teacher-container">
       <div className="form-card">
-        <h1 className="title">👨‍🏫 Teacher Details</h1>
+        <h1 className="title">Teacher Details</h1>
         <p className="subtitle">Complete the form below</p>
 
         <form onSubmit={handleSubmit} className="teacher-form">
@@ -91,6 +118,23 @@ const TeacherDetails = () => {
           </div>
 
           <div className="form-group">
+            <label>Profile Photo</label>
+            <input
+              type="file"
+              name="TeacherImage"
+              accept="image/*"
+              onChange={handleChange}
+            />
+          </div>
+
+          {imagePreview && (
+            <div className="form-group">
+              <label>Preview</label>
+              <img src={imagePreview} alt="Teacher preview" className="image-preview" />
+            </div>
+          )}
+
+          <div className="form-group">
             <label>Password</label>
             <input
               type="password"              
@@ -140,7 +184,7 @@ const TeacherDetails = () => {
           </div>
 
           <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? '⏳ Saving...' : '💾 Save Teacher Details'}
+            {loading ? '⏳ Saving...' : '💾 Save  Details'}
           </button>
         </form>
       </div>

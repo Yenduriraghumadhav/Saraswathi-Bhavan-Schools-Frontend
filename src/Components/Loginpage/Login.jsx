@@ -1,32 +1,51 @@
 import React, { useState } from 'react'
 import "./login.css"
 import axios from 'axios'
-import { data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
     const navigate = useNavigate();
     const [loginType, setLoginType] = useState("student");
-    const [loginDetails, setLoginDetails] = useState({
-        stdemail: "",
-        stdpassword: ""
-    });
+    const [loginDetails, setLoginDetails] = useState({ stdemail: "", stdpassword: "" });
+    const [teacherLoginDetails, setTeacherLoginDetails] = useState({ TeacherEmail: "", TeacherPassword: "" });
 
-    const loginSubmit = async () => {
+
+    const studentLoginSubmit = async () => {
         if (!loginDetails.stdemail || !loginDetails.stdpassword) {
-            alert("Please fill all fields");
+            alert("Please fill all student fields");
             return;
         }
 
         try {
             const response = await axios.post("http://localhost:2001/api/userstudentlogin/studentLogin", loginDetails);
             localStorage.setItem("jwtToken", response.data.token);
-            localStorage.setItem("role", response.data.user.role);
-            alert("Login successful");
+            localStorage.setItem("role", response.data.user.role || "student");
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            alert("Student login successful");
             navigate("/dashboard");
         } catch (error) {
-            console.error("Login error:", error);
-            alert("Login failed");
+            console.error("Student login error:", error);
+            alert("Student login failed");
+        }
+    };
+
+    const teacherLoginSubmit = async () => {
+        if (!teacherLoginDetails.TeacherEmail || !teacherLoginDetails.TeacherPassword) {
+            alert("Please fill all teacher fields");
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:2001/api/userteacherlogin/teacherLogin", teacherLoginDetails);
+            localStorage.setItem("jwtToken", response.data.token);
+            localStorage.setItem("role", response.data.user.role || "teacher");
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            alert("Teacher login successful");
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Teacher login error:", error);
+            alert("Teacher login failed");
         }
     };
 
@@ -56,7 +75,7 @@ const Login = () => {
                     {loginType === "student" ? (
                         <>
                             <div className="input-group">
-                                <label>Email</label>
+                                <label>StdEmail</label>
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
@@ -65,7 +84,7 @@ const Login = () => {
                                 />
                             </div>
                             <div className="input-group">
-                                <label>Password</label>
+                                <label>StdPassword</label>
                                 <input
                                     type="password"
                                     placeholder="Enter your password"
@@ -73,6 +92,7 @@ const Login = () => {
                                     onChange={(e) => setLoginDetails({ ...loginDetails, stdpassword: e.target.value })}
                                 />
                             </div>
+                            <button className="login-btn" type="button" onClick={studentLoginSubmit}>Student Login</button>
                         </>
                     ) : (
                         <>
@@ -81,6 +101,8 @@ const Login = () => {
                                 <input
                                     type="email"
                                     placeholder="Enter teacher email"
+                                    value={teacherLoginDetails.TeacherEmail}
+                                    onChange={(e) => setTeacherLoginDetails({ ...teacherLoginDetails, TeacherEmail: e.target.value })}
                                 />
                             </div>
                             <div className="input-group">
@@ -88,12 +110,13 @@ const Login = () => {
                                 <input
                                     type="password"
                                     placeholder="Enter teacher password"
+                                    value={teacherLoginDetails.TeacherPassword}
+                                    onChange={(e) => setTeacherLoginDetails({ ...teacherLoginDetails, TeacherPassword: e.target.value })}
                                 />
                             </div>
+                            <button className="login-btn" type="button" onClick={teacherLoginSubmit}>Teacher Login</button>
                         </>
                     )}
-
-                    <button className="login-btn" type="button" onClick={loginSubmit}>Login</button>
                     <div className="footer-text">
                         Don't have an account? <Link to="/profiledetails">Register</Link>
                     </div>

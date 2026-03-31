@@ -8,13 +8,6 @@ const ContactUs = () => {
 
     <div className='contact-us-par'>
 
-
-
-
-
-
-
-
       <div className='locations'>
         <iframe
           src="https://www.google.com/maps?q=Indus+International+School+Kurnool&z=15&output=embed"
