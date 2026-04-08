@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './profile.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Profile = () => {
   const [avatarUrl, setAvatarUrl] = useState('https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
@@ -19,10 +20,20 @@ const Profile = () => {
 
   useEffect(() => {
     const raw = localStorage.getItem("user");
-    console.log("RAW:", raw);
+    const parsed = raw ? JSON.parse(raw) : {};
+    const { stdemail, TeacherEmail, role } = parsed;
+    const logoutemail = stdemail || TeacherEmail;
+    const logoutrole = role;
 
-    const savedUser = JSON.parse(raw);
-    console.log("PARSED:", savedUser);
+    if (!raw) return;
+    let savedUser = null;
+    try {
+      savedUser = JSON.parse(raw);
+    } catch (err) {
+      console.error('Failed to parse user from localStorage', err);
+      return;
+    }
+
 
     if (!savedUser) return;
 
@@ -36,6 +47,8 @@ const Profile = () => {
       address: savedUser.TeacherAddress || ""
     });
 
+    console.log(savedUser);
+
     setAvatarUrl(
       savedUser.stdImage ||
       savedUser.TeacherImage ||
@@ -43,6 +56,15 @@ const Profile = () => {
       "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
     );
   }, []);
+
+  const imgSrc = avatarUrl
+    ? (avatarUrl.startsWith('http://') || avatarUrl.startsWith('https://')
+      ? avatarUrl
+      : `http://localhost:2001/uploads/${avatarUrl}`)
+    : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+
+  console.log("imgsrc", imgSrc);
+
 
   const handleInputChange = (field) => (event) => {
     setProfileData((prev) => ({
@@ -60,12 +82,34 @@ const Profile = () => {
     alert("Profile updated");
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("jwtToken");
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
-    console.log('🚫 After removal - token:', localStorage.getItem("jwtToken"));
-    navigate("/login");
+
+  const handleLogout = async () => {
+    try {
+      const raw = localStorage.getItem("user");
+
+      const parsed = raw ? JSON.parse(raw) : {};
+
+      const { stdemail, TeacherEmail, role } = parsed;
+
+      const logoutemail = stdemail || TeacherEmail;
+      const logoutrole = role;
+
+      console.log("Sending:", logoutemail, logoutrole);
+
+      const res = await axios.post(
+        "http://localhost:2001/api/totallogout/totallogoutDetails",
+        { logoutemail, logoutrole },
+        { withCredentials: true }
+      );
+
+      console.log("Logout response:", res.data);
+
+      localStorage.clear();
+      navigate("/login");
+
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
   };
 
   return (
@@ -73,7 +117,7 @@ const Profile = () => {
       <div className="profile-card">
         <div className="avatar-section">
           <div className="avatar-wrapper">
-            <img className="avatar-img" src={avatarUrl} alt="User Avatar" />
+            <img className="avatar-img" src={imgSrc} alt="User Avatar" />
           </div>
         </div>
 

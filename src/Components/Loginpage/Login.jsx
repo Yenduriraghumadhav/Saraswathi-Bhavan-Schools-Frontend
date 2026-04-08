@@ -18,9 +18,9 @@ const Login = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:2001/api/userstudentlogin/studentLogin", loginDetails);
-            localStorage.setItem("jwtToken", response.data.token);
-            localStorage.setItem("role", response.data.user.role || "student");
+            const response = await axios.post("http://localhost:2001/api/userstudentlogin/studentLogin", loginDetails, {
+                withCredentials: true
+            });
             localStorage.setItem("user", JSON.stringify(response.data.user));
             alert("Student login successful");
             navigate("/dashboard");
@@ -37,9 +37,13 @@ const Login = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:2001/api/userteacherlogin/teacherLogin", teacherLoginDetails);
+            const response = await axios.post("http://localhost:2001/api/userteacherlogin/teacherLogin", teacherLoginDetails, {
+                withCredentials: true
+            });
             localStorage.setItem("jwtToken", response.data.token);
-            localStorage.setItem("role", response.data.user.role || "teacher");
+            console.log("jwtToken", response.data.token);
+            localStorage.setItem("role", response.data.user.role);
+            console.log("role", response.data.user.role)
             localStorage.setItem("user", JSON.stringify(response.data.user));
             alert("Teacher login successful");
             navigate("/dashboard");

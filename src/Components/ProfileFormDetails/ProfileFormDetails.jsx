@@ -15,6 +15,7 @@ const ProfileFormDetails = () => {
     stdpassword: "",
     stdaddress: "",
     stdgender: "",
+    stdclass: "",
     stdImage: null
   });
 
@@ -63,6 +64,10 @@ const ProfileFormDetails = () => {
       newErrors.stdphoneNumber = "Phone number must be exactly 10 digits";
     }
 
+    if (userDetails.stdclass < 0 || userDetails.stdclass > 11) {
+      newErrors.stdclass = "Class must be between 1 and 10";
+    }
+
     if (!userDetails.stdpassword) {
       newErrors.stdpassword = "Password is required";
     } else if (userDetails.stdpassword.length < 5) {
@@ -82,6 +87,7 @@ const ProfileFormDetails = () => {
     try {
       const formData = new FormData();
       Object.entries(userDetails).forEach(([key, value]) => {
+        const cleanKey = key.trim();
         if (value !== null) {
           formData.append(key, value);
         }
@@ -89,25 +95,22 @@ const ProfileFormDetails = () => {
 
       const response = await axios.post(
         "http://localhost:2001/api/userstudentdetails/StudentDetails",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }
+        formData
       );
+      console.log("formData:", formData);
       console.log(response.data);
       alert("Thank you");
       setUserDetails({
-        stdname: "",
-        stdfathername: "",
-        stdmothername: "",
-        stdemail: "",
-        stdrollNumber: "",
-        stdphoneNumber: "",
-        stdpassword: "",
-        stdaddress: "",
-        stdgender: "",
+        stdname:"",
+        stdfathername:"",
+        stdmothername:"",
+        stdemail:"",
+        stdrollNumber:"",
+        stdphoneNumber:"",
+        stdpassword:"",
+        stdaddress:"",
+        stdgender:"",
+        stdclass:"",
         stdImage: null
       });
       setImagePreview(null);
@@ -141,6 +144,13 @@ const ProfileFormDetails = () => {
               placeholder='Enter Mother Name'
               onChange={personalDetails}
               className={errors.stdmothername ? 'error' : ''}
+              autoComplete="off"
+            />
+            <input
+              name="stdclass"
+              placeholder='Enter Class'
+              onChange={personalDetails}
+              className={errors.stdclass? 'error' : ''}
               autoComplete="off"
             />
             <input
