@@ -94,15 +94,11 @@ const Profile = () => {
       const logoutemail = stdemail || TeacherEmail;
       const logoutrole = role;
 
-      console.log("Sending:", logoutemail, logoutrole);
-
       const res = await axios.post(
         "http://localhost:2001/api/totallogout/totallogoutDetails",
         { logoutemail, logoutrole },
         { withCredentials: true }
       );
-
-      console.log("Logout response:", res.data);
 
       localStorage.clear();
       navigate("/login");

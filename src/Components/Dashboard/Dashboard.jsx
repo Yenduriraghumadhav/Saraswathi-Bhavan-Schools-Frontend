@@ -56,11 +56,12 @@ useEffect(() => {
         return res.json();
       })
       .then(data => {
-        if (Array.isArray(data)) {
-          setStudentData(calculatePassPercentage(data));
-        } else {
-          setStudentData([]);
-        }
+        // if (Array.isArray(data)) {
+        //   setStudentData(calculatePassPercentage(data));
+        // } else {
+        //   setStudentData([]);
+        // }
+        setStudentData(calculatePassPercentage(data.students || []));
       })
       .catch(err => console.error("Error fetching data:", err));
   }

@@ -24,19 +24,29 @@ const ProfileFormDetails = () => {
 
   const personalDetails = (e) => {
     const { name, type, value, files } = e.target;
-    if (type === 'file') {
+
+    if (type === "file") {
       const file = files[0] || null;
-      setUserDetails((prev) => ({ ...prev, [name]: file }));
+
+      setUserDetails((prev) => ({
+        ...prev,
+        [name]: file
+      }));
+
       setImagePreview(file ? URL.createObjectURL(file) : null);
       return;
     }
 
-    setUserDetails({
-      ...userDetails,
+    setUserDetails((prev) => ({
+      ...prev,
       [name]: value
-    });
+    }));
+
     if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
+      setErrors((prev) => ({
+        ...prev,
+        [name]: ""
+      }));
     }
   };
 
@@ -95,22 +105,22 @@ const ProfileFormDetails = () => {
 
       const response = await axios.post(
         "http://localhost:2001/api/userstudentdetails/StudentDetails",
-        formData
+        formData, { withCredentials: true }
       );
       console.log("formData:", formData);
       console.log(response.data);
       alert("Thank you");
       setUserDetails({
-        stdname:"",
-        stdfathername:"",
-        stdmothername:"",
-        stdemail:"",
-        stdrollNumber:"",
-        stdphoneNumber:"",
-        stdpassword:"",
-        stdaddress:"",
-        stdgender:"",
-        stdclass:"",
+        stdname: "",
+        stdfathername: "",
+        stdmothername: "",
+        stdemail: "",
+        stdrollNumber: "",
+        stdphoneNumber: "",
+        stdpassword: "",
+        stdaddress: "",
+        stdgender: "",
+        stdclass: "",
         stdImage: null
       });
       setImagePreview(null);
@@ -150,7 +160,7 @@ const ProfileFormDetails = () => {
               name="stdclass"
               placeholder='Enter Class'
               onChange={personalDetails}
-              className={errors.stdclass? 'error' : ''}
+              className={errors.stdclass ? 'error' : ''}
               autoComplete="off"
             />
             <input

@@ -13,6 +13,7 @@ import RollnumberCheck from './Components/ProfileFormDetails/RollnumberCheck';
 import Login from './Components/Loginpage/Login';
 import Dashbord from './Components/Dashboard/Dashboard';
 import TeacherDetails from './Components/TeachersDetails/TeacherDetails';
+import TeacherMarksAdding from './Pages/Teacher-marks-adding/Teacher-marks-adding';
 
 const AppContent = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const AppContent = () => {
           <Route path='/rollcheck' element={<RollnumberCheck/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path="/teacherSignUppage" element={<TeacherDetails/>}></Route>
+          <Route path='/addingmarks' element={<TeacherMarksAdding/>}></Route>
         </Routes>
       </div>
     </>
