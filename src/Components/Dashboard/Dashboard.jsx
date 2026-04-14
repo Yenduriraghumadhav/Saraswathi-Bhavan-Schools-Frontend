@@ -3,8 +3,6 @@ import "./dashboard.css";
 import students1 from "../../assets/home-students2.jpg";
 import students2 from "../../assets/home-students1.jpg";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
-import Footer from "../Footer/Footer.jsx";
-import { BiHome } from "react-icons/bi";
 import Home from "../../Pages/Home/Home.jsx";
 
 const classApiMap = {
@@ -24,8 +22,18 @@ const classApiMap = {
 
 const calculatePassPercentage = (students) => {
   const subjects = ["telugu", "hindi", "social", "maths", "science", "english"];
+  const examLevels = ["final", "prefinal", "mid"];
+
   return subjects.map(subject => {
-    const passCount = students.filter(std => std.result?.final?.[subject] >= 35).length;
+    const passCount = students.filter(std => {
+      const activeExam = examLevels.find(level =>
+        std.result?.[level] && std.result[level][subject] !== undefined
+      );
+
+      if (!activeExam) return false;
+      return std.result[activeExam][subject] >= 35;
+    }).length;
+
     const total = students.length || 1;
     return {
       subject: subject.charAt(0).toUpperCase() + subject.slice(1),
@@ -35,41 +43,37 @@ const calculatePassPercentage = (students) => {
 };
 
 const Dashboard = () => {
-  const [conditionstate, setconditionstate] = useState("firstclass"); 
+  const [conditionstate, setconditionstate] = useState("firstclass");
   const [studentData, setStudentData] = useState([]);
 
   const colors = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088FE", "#FFBB28"];
 
-useEffect(() => {
-  if (conditionstate) {
-    fetch(classApiMap[conditionstate], {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include",
-    })
-      .then(res => {
-        if (res.status === 401) {
-          throw new Error("Unauthorized! Please login again.");
-        }
-        return res.json();
+  useEffect(() => {
+    if (conditionstate) {
+      fetch(classApiMap[conditionstate], {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
       })
-      .then(data => {
-        // if (Array.isArray(data)) {
-        //   setStudentData(calculatePassPercentage(data));
-        // } else {
-        //   setStudentData([]);
-        // }
-        setStudentData(calculatePassPercentage(data.students || []));
-      })
-      .catch(err => console.error("Error fetching data:", err));
-  }
-}, [conditionstate]);
+        .then(res => {
+          if (res.status === 401) {
+            throw new Error("Unauthorized! Please login again.");
+          }
+          return res.json();
+        })
+        .then(data => {
+          const studentsList = Array.isArray(data) ? data : (data.students || []);
+          setStudentData(calculatePassPercentage(studentsList));
+        })
+        .catch(err => console.error("Error fetching data:", err));
+    }
+  }, [conditionstate]);
 
   return (
     <>
-      <div className="container mt-4">
+      <div className="container-fluid px-md-5 mt-4">
 
         <div id="carouselExampleControls" className="carousel slide mb-5" data-bs-ride="carousel">
           <div className="carousel-inner">
@@ -111,8 +115,15 @@ useEffect(() => {
           })}
         </div>
 
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <h2 style={{ color: "#374151" }}>
+            {["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"][
+              Object.keys(classApiMap).indexOf(conditionstate)
+            ]} Class - Pass Percentage by Subject
+          </h2>
+        </div>
 
-        <div style={{ width: "100%", height: 400, marginTop: "50px" }}>
+        <div style={{ width: "90%", height: 450, marginTop: "20px", marginInline: "auto" }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={studentData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -132,9 +143,6 @@ useEffect(() => {
 
       <div>
         <Home />
-      </div>
-      <div className="footer-details">
-        <Footer />
       </div>
     </>
   );

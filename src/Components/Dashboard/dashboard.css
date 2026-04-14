@@ -57,13 +57,13 @@
 }
 
 .imgescorosal {
-    height: 530px;
+    height: 600px;
 }
 
 .carousel-item img {
-    height: 530px;
+    height: 600px;
     object-fit: cover;
-    width: 100%;
+    width: 80%;
 }
 
 
@@ -74,11 +74,11 @@
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
     .imgescorosal {
-        height: 400px;
+        height: 450px;
     }
 
     .carousel-item img {
-        height: 400px;
+        height: 450px;
         object-fit: cover;
         width: 100%;
     }

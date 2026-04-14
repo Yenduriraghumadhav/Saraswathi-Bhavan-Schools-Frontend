@@ -1,0 +1,172 @@
+.about-container {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    background: #f7f7f7;
+    border-radius: 20px;
+}
+
+.about-left {
+    flex: 1;
+}
+
+.about-tag {
+    display: inline-block;
+    background: rgba(255, 165, 0, 0.1);
+    color: #f39c12;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.about-left h1 {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1a202c;
+    margin-bottom: 20px;
+}
+
+.about-left .highlight {
+    color: #250499;
+    position: relative;
+}
+
+.about-left .sub-heading {
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 32px;
+}
+
+.heading-divider {
+    width: 60px;
+    height: 4px;
+    background: #250499;
+    border-radius: 2px;
+    margin-bottom: 30px;
+}
+
+.about-description {
+    color: #718096;
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 90%;
+    margin-bottom: 20px;
+}
+
+.about-right {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(37, 4, 153, 0.1);
+}
+
+.stat-card h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.stat-card:hover h2 {
+    color: #250499;
+}
+
+.stat-card p {
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.fees-container {
+    padding: 30px;
+    margin-top: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.fees-container h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #1a202c;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th {
+    background-color: #250499;
+    color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+th:first-child {
+    border-top-left-radius: 12px;
+}
+
+th:last-child {
+    border-top-right-radius: 12px;
+}
+
+td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #edf2f7;
+    color: #4a5568;
+    font-size: 15px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+    }
+}

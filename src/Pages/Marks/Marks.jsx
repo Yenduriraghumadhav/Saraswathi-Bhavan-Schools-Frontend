@@ -106,7 +106,7 @@ const Marks = () => {
       : "pending";
   };
 
-  // ✅ NEW
+  
   const getAvailableExams = (result) => {
     if (!result) return [];
 
@@ -128,7 +128,7 @@ const Marks = () => {
     const subjects = ['telugu', 'hindi', 'english', 'maths', 'science', 'social'];
     const exams = getAvailableExams(marksData.result);
 
-    // ✅ No exams yet
+    
     if (exams.length === 0) {
       return (
         <div className="no-results">
@@ -209,7 +209,7 @@ const Marks = () => {
             </table>
           </div>
 
-          {/* ✅ Scorecard (only if mid exists) */}
+        
           {exams.includes("mid") && (
             <div className="scorecard">
               <div className="scorecard-header">
@@ -232,7 +232,7 @@ const Marks = () => {
             </div>
           )}
 
-          {/* ✅ Dynamic Progress */}
+          
           <div className="progress-card">
             <h4>Exam Progress</h4>
             <div className="progress-list">
@@ -262,7 +262,6 @@ const Marks = () => {
       <div className="student-marks-app">
         {renderMarksTable()}
       </div>
-      <Footer />
     </div>
   );
 };

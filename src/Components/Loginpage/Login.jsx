@@ -121,12 +121,20 @@ const Login = () => {
                             <button className="login-btn" type="button" onClick={teacherLoginSubmit}>Teacher Login</button>
                         </>
                     )}
-                    <div className="footer-text">
-                        Don't have an account? <Link to="/profiledetails">Register</Link>
-                    </div>
+
+                    {loginType === "student" ? (
+                        <div className="footer-text">
+                            <Link to="/forgot-password">Forgotten Password?</Link>
+                        </div>
+                    ) : (
+                        <div className="footer-text">
+                            <Link to="/forgot-password-for-teachers">Forgotten Password?</Link>
+                        </div>
+                    )}
+
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

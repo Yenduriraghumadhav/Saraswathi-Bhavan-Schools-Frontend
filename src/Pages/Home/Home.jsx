@@ -17,7 +17,7 @@ const Home = () => {
     { label: 'FACULTIES', target: 1000 },
     { label: 'STUDENTS', target: 15000 },
     { label: 'BRANCHES', target: 8 },
-    { label: 'CITIES', target: 3 }
+    { label: 'CITIES', target: 5 }
   ];
 
   const [animatedCounts, setAnimatedCounts] = useState(statsData.map(() => 0));
@@ -26,12 +26,12 @@ const Home = () => {
     const interval = setInterval(() => {
       setAnimatedCounts(statsData.map(() => 0));
       setShouldAnimate(true);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
-  
+
   const AnimatedCounter = ({ target, index }) => {
     const [count, setCount] = useState(0);
 

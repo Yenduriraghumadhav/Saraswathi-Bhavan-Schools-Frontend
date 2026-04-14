@@ -15,11 +15,25 @@ const classApiMap = {
     tenthclass: "http://localhost:2001/api/tenthclass/tenthclassstudents",
 };
 
+const classValueMap = {
+    firstclass: 1,
+    secondclass: 2,
+    thirdclass: 3,
+    fourthclass: 4,
+    fifthclass: 5,
+    sixthclass: 6,
+    seventhclass: 7,
+    eighthclass: 8,
+    ninthclass: 9,
+    tenthclass: 10,
+};
+
 const subjects = ["maths", "science", "english", "social", "hindi", "telugu"];
 
 const TeacherMarksAdding = () => {
     const [selectedClass, setSelectedClass] = useState(null);
     const [resultType, setresultType] = useState("");
+    const [operation, setOperation] = useState("post"); // "post" or "put"
     const [formData, setFormData] = useState({
         stdName: "",
         stdRollNumber: "",
@@ -36,7 +50,7 @@ const TeacherMarksAdding = () => {
         setSelectedClass(classKey);
     };
 
-    // 🔥 Handle subject marks
+
     const handleMarksChange = (subject, value) => {
         setFormData({
             ...formData,
@@ -53,6 +67,7 @@ const TeacherMarksAdding = () => {
             const payload = {
                 stdName: formData.stdName,
                 stdRollNumber: formData.stdRollNumber,
+                classurl: classValueMap[selectedClass],
                 resultType: resultType,
                 result: formData.result
             };
@@ -62,13 +77,57 @@ const TeacherMarksAdding = () => {
             });
 
             console.log("Data sent:", payload);
+            alert("Marks added successfully!");
         } catch (err) {
             console.log(err);
+            alert("Error adding marks");
+        }
+    };
+
+    const handlePut = async () => {
+        try {
+            const payload = {
+                stdRollNumber: formData.stdRollNumber,
+                classurl: classValueMap[selectedClass],
+                resultType: resultType,
+                result: formData.result
+            };
+
+            await axios.put(classApiMap[selectedClass], payload, {
+                withCredentials: true
+            });
+
+            console.log("Data updated:", payload);
+            alert("Marks updated successfully!");
+        } catch (err) {
+            console.log(err);
+            alert("Error updating marks");
         }
     };
 
     return (
         <div className="container">
+            <div className="operation-group">
+                <label>
+                    <input
+                        type="radio"
+                        name="operation"
+                        value="post"
+                        checked={operation === "post"}
+                        onChange={(e) => setOperation(e.target.value)}
+                    /> Add Marks
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        name="operation"
+                        value="put"
+                        checked={operation === "put"}
+                        onChange={(e) => setOperation(e.target.value)}
+                    /> Update Marks
+                </label>
+            </div>
+
             <div className="button-group">
                 {Object.keys(classApiMap).map((key) => (
                     <button
@@ -81,17 +140,23 @@ const TeacherMarksAdding = () => {
                 ))}
             </div>
 
-            {/* 🔵 Form */}
             <div className="form">
-                <input placeholder="Student Name" onChange={(e) =>
-                    setFormData({ ...formData, stdName: e.target.value })
-                } />
-                <input placeholder="Roll Number" onChange={(e) =>
-                    setFormData({ ...formData, stdRollNumber: e.target.value })
-                } />
+                {operation === "post" && (
+                    <input
+                        placeholder="Student Name"
+                        onChange={(e) =>
+                            setFormData({ ...formData, stdName: e.target.value })
+                        }
+                    />
+                )}
+                <input
+                    placeholder="Roll Number"
+                    onChange={(e) =>
+                        setFormData({ ...formData, stdRollNumber: e.target.value })
+                    }
+                />
             </div>
 
-            {/* 🔵 Radio */}
             <div className="radio-group">
                 <label>
                     <input type="radio" name="resultType" value="mid"
@@ -133,8 +198,11 @@ const TeacherMarksAdding = () => {
                 </table>
             </div>
 
-            <button className="submit-btn" onClick={handlePost}>
-                Submit Marks
+            <button
+                className="submit-btn"
+                onClick={operation === "post" ? handlePost : handlePut}
+            >
+                {operation === "post" ? "Submit Marks" : "Update Marks"}
             </button>
         </div>
     );
