@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';  
+import axios from 'axios';
 import './TeacherDetails.css';
 
 const TeacherDetails = () => {
@@ -10,7 +10,8 @@ const TeacherDetails = () => {
     TeacherAddress: '',
     TeacherPassword: '',
     TeacherGender: '',
-    TeacherImage: null
+    TeacherImage: null,
+    TeacherAssignedclass: ''
   });
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -38,6 +39,7 @@ const TeacherDetails = () => {
       submitData.append('TeacherAddress', formData.TeacherAddress);
       submitData.append('TeacherPassword', formData.TeacherPassword);
       submitData.append('TeacherGender', formData.TeacherGender);
+      submitData.append('TeacherAssignedclass', formData.TeacherAssignedclass);
       if (formData.TeacherImage) {
         submitData.append('TeacherImage', formData.TeacherImage);
       }
@@ -49,7 +51,7 @@ const TeacherDetails = () => {
       });
 
       alert('Teacher saved successfully!');
-      setFormData({ TeacherName: '', TeacherEmail: '', TeacherPhone: '', TeacherAddress: '', TeacherPassword: '', TeacherGender: '', TeacherImage: null });
+      setFormData({ TeacherName: '', TeacherEmail: '', TeacherPhone: '', TeacherAddress: '', TeacherPassword: '', TeacherGender: '', TeacherImage: null, TeacherAssignedclass: '' });
       setImagePreview(null);
     } catch (error) {
       alert('Error saving teacher: ' + (error.response?.data?.message || 'Try again'));
@@ -65,12 +67,13 @@ const TeacherDetails = () => {
         <p className="subtitle">Complete the form below</p>
 
         <form onSubmit={handleSubmit} className="teacher-form">
-  
+
           <div className="form-group">
             <label>Full Name</label>
             <input
               type="text"
-              name="TeacherName"           
+              style={{ width: "100%", padding: "15px", borderRadius: "20px", textAlign: "left" }}
+              name="TeacherName"
               value={formData.TeacherName}
               onChange={handleChange}
               placeholder="Enter full name"
@@ -78,12 +81,12 @@ const TeacherDetails = () => {
             />
           </div>
 
-       
+
           <div className="form-group">
             <label>Email Address</label>
             <input
               type="email"
-              name="TeacherEmail"          
+              name="TeacherEmail"
               value={formData.TeacherEmail}
               onChange={handleChange}
               placeholder="teacher@example.com"
@@ -91,12 +94,12 @@ const TeacherDetails = () => {
             />
           </div>
 
-      
+
           <div className="form-group">
             <label>Phone Number</label>
             <input
               type="tel"
-              name="TeacherPhone"         
+              name="TeacherPhone"
               value={formData.TeacherPhone}
               onChange={handleChange}
               placeholder=" 98765 43210"
@@ -104,11 +107,11 @@ const TeacherDetails = () => {
             />
           </div>
 
-     
+
           <div className="form-group">
             <label>Address</label>
             <textarea
-              name="TeacherAddress"        
+              name="TeacherAddress"
               rows="4"
               value={formData.TeacherAddress}
               onChange={handleChange}
@@ -127,6 +130,21 @@ const TeacherDetails = () => {
             />
           </div>
 
+          <div className="form-group">
+            <label>Assigned Class</label>
+            <select
+              name="TeacherAssignedclass"
+              value={formData.TeacherAssignedclass}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select class</option>
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>{`Class ${n}`}</option>
+              ))}
+            </select>
+          </div>
+
           {imagePreview && (
             <div className="form-group">
               <label>Preview</label>
@@ -137,8 +155,8 @@ const TeacherDetails = () => {
           <div className="form-group">
             <label>Password</label>
             <input
-              type="password"              
-              name="TeacherPassword"      
+              type="password"
+              name="TeacherPassword"
               value={formData.TeacherPassword}
               onChange={handleChange}
               placeholder="Enter password"
@@ -146,14 +164,14 @@ const TeacherDetails = () => {
             />
           </div>
 
-     
+
           <div className="form-group">
             <label>Gender</label>
             <div className="radio-group">
               <label className="radio-option">
                 <input
                   type="radio"
-                  name="TeacherGender"        
+                  name="TeacherGender"
                   value="male"
                   checked={formData.TeacherGender === 'male'}
                   onChange={handleChange}
@@ -174,7 +192,7 @@ const TeacherDetails = () => {
                 <input
                   type="radio"
                   name="TeacherGender"
-                  value="others"               
+                  value="others"
                   checked={formData.TeacherGender === 'others'}
                   onChange={handleChange}
                 />

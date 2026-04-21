@@ -72,6 +72,7 @@ const ForgotPassword = () => {
                     <h2>Rest Password</h2>
                     <input
                         type="text"
+                        style={{ width: "100%", padding: "12px 16px", borderRadius: "12px", border: "1px solid var(--input-border)", background: "transparent", color: "var(--text-main)", fontSize: "0.95rem", transition: "0.3s", boxSizing: "border-box" }}
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -92,6 +93,7 @@ const ForgotPassword = () => {
                     <h2>Verify OTP</h2>
                     <input
                         type="text"
+                        style={{ width: "100%", padding: "12px 16px", borderRadius: "12px", border: "1px solid var(--input-border)", background: "transparent", color: "var(--text-main)", fontSize: "0.95rem", transition: "0.3s", boxSizing: "border-box" }}
                         placeholder="Enter OTP"
                         value={otps}
                         onChange={(e) => setOtps(e.target.value)}
@@ -107,6 +109,7 @@ const ForgotPassword = () => {
                     <h2>Reset Password</h2>
                     <input
                         type="password"
+                        style={{ width: "100%", padding: "12px 16px", borderRadius: "12px", border: "1px solid var(--input-border)", background: "transparent", color: "var(--text-main)", fontSize: "0.95rem", transition: "0.3s", boxSizing: "border-box" }}
                         placeholder="Enter New Password"
                         value={newpassword}
                         onChange={(e) => setnewpassword(e.target.value)}

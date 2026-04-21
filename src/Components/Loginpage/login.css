@@ -12,6 +12,7 @@
     right: 0;
     bottom: 0;
     z-index: 9999;
+    background: white;
 }
 
 
@@ -114,4 +115,36 @@
 .login-toggle .active-toggle {
     background-color: #007bff;
     color: white;
+}
+
+/* Two-column layout for login page */
+.login-page {
+    display: flex;
+    width: 70%;
+    height: 90vh;
+    border-radius: 20px;
+}
+
+.left-panel {
+    flex: 1;
+    display: block;
+}
+
+.left-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.right-panel {
+    width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
 }

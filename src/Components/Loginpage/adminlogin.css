@@ -1,0 +1,209 @@
+
+.adminparent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.adminlogin {
+    border: none;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    width: 500px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 20px;
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.adminlogin:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+.adminlogin h1 {
+    color: #333;
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.adminlogin p {
+    color: #777;
+    margin: 0 0 20px 0;
+    font-size: 14px;
+}
+
+.adminemail, .adminpassword {
+    padding: 14px 16px;
+    width: 100%;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.adminemail:focus, .adminpassword:focus {
+    outline: none;
+    border-color: #667eea;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.adminemail::placeholder, .adminpassword::placeholder {
+    color: #999;
+}
+
+.adiminbutton {
+    padding: 14px 20px;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.adiminbutton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.adiminbutton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+}
+
+/* Tablet - Medium screens */
+@media (max-width: 1024px) {
+    .adminlogin {
+        width: 450px;
+        padding: 35px;
+    }
+    
+    .adminemail, .adminpassword {
+        font-size: 14px;
+        padding: 12px 14px;
+    }
+    
+    .adiminbutton {
+        height: 45px;
+        font-size: 15px;
+    }
+}
+
+/* Small tablet - Medium-small screens */
+@media (max-width: 768px) {
+    .adminparent {
+        padding: 20px;
+    }
+    
+    .adminlogin {
+        width: 90%;
+        max-width: 400px;
+        padding: 30px 25px;
+        height: auto;
+    }
+    
+    .adminlogin h1 {
+        font-size: 24px;
+    }
+    
+    .adminemail, .adminpassword {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+    
+    .adiminbutton {
+        width: 100%;
+        height: 45px;
+        margin-left: 0;
+        font-size: 15px;
+    }
+}
+
+/* Mobile - Large phones */
+@media (max-width: 480px) {
+    .adminparent {
+        padding: 15px;
+        min-height: auto;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    
+    .adminlogin {
+        width: 100%;
+        padding: 25px;
+        border-radius: 12px;
+        gap: 15px;
+    }
+    
+    .adminlogin h1 {
+        font-size: 22px;
+        margin-bottom: 5px;
+    }
+    
+    .adminlogin p {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .adminemail, .adminpassword {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+    
+    .adiminbutton {
+        width: 100%;
+        height: 45px;
+        margin: 0;
+        padding: 12px;
+        font-size: 15px;
+        border-radius: 6px;
+    }
+}
+
+/* Extra small mobile - Small phones */
+@media (max-width: 360px) {
+    .adminlogin {
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    .adminlogin h1 {
+        font-size: 20px;
+    }
+    
+    .adminemail, .adminpassword {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .adiminbutton {
+        height: 42px;
+        font-size: 14px;
+        padding: 10px;
+    }
+}

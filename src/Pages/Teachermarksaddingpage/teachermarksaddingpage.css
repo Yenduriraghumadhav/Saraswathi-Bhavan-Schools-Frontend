@@ -1,0 +1,109 @@
+/* Page wrapper to keep footer from overlapping */
+.teacher-marks-page {
+  max-width: 1100px;
+  margin: 18px auto 120px auto; /* bottom margin keeps footer clear */
+  padding: 18px;
+  background: transparent;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 24px;
+}
+
+/* smaller, centered dropdown */
+select {
+  display: block;
+  margin: 8px auto 12px auto;
+  padding: 8px 10px;
+  width: 280px; /* reduced width */
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* responsive: make dropdown full width on small screens */
+@media (max-width: 520px) {
+  select { width: 100%; max-width: 420px; }
+}
+
+/* table wrapper with spacing */
+.table-container {
+  margin: 18px auto 28px auto;
+  width: 95%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #4f46e5; /* match admin */
+  color: white;
+}
+
+th {
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #f1f1f1;
+  background: #fff;
+}
+
+tr:hover td {
+  background-color: #fbfbff;
+}
+
+input[type="number"], input[type="text"] {
+  width: 70px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  text-align: center;
+}
+
+/* make inputs a bit smaller on mobile */
+@media (max-width: 768px) {
+  input[type="number"], input[type="text"] { width: 50px; }
+  th, td { padding: 10px 6px; }
+}
+
+button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* POST button style */
+button.post-btn {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+/* PUT button style */
+button.put-btn {
+  background-color: #ffb84d;
+  color: #fff;
+}
+
+/* ensure there is space between table and footer */
+.spacer-bottom {
+  height: 100px;
+}

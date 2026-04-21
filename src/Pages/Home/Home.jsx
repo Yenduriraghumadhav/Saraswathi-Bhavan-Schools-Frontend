@@ -32,6 +32,7 @@ const Home = () => {
   }, []);
 
 
+
   const AnimatedCounter = ({ target, index }) => {
     const [count, setCount] = useState(0);
 

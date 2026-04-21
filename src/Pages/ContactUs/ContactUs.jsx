@@ -1,8 +1,25 @@
 import React from 'react'
 import "./contactus.css"
-import Footer from '../../Components/Footer/Footer';
+import axios from 'axios';
+import { useState } from 'react';
 
 const ContactUs = () => {
+  const [supportName, setsupportName] = useState("");
+  const [supportEmail, setsupportEmail] = useState("");
+  const [supportMobileNumber, setsupportMobileNumber] = useState("");
+
+  async function submitdetails() {
+    try {
+      const conect = await axios.post("http://localhost:2001/api/getInTouchDetails/GetInTouchDetails", { supportName, supportEmail, supportMobileNumber })
+      console.log(conect);
+      alert("Details submitted successfully");
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong");
+    }
+  }
+
+
   return (
     <>
 
@@ -36,22 +53,26 @@ const ContactUs = () => {
               <input
                 type="text"
                 placeholder=" Name"
+                style={{ width: '100%', padding: "12px 14px", textAlign: "left" }}
                 className="contact-input"
+                onChange={(e) => setsupportName(e.target.value)}
               />
 
               <input
                 type="email"
                 placeholder=" Email"
                 className="contact-input"
+                onChange={(e) => setsupportEmail(e.target.value)}
               />
 
               <input
                 type="tel"
                 placeholder=" Mobile number"
                 className="contact-input"
+                onChange={(e) => setsupportMobileNumber(e.target.value)}
               />
 
-              <button className="contact-button">Submit</button>
+              <button className="contact-button" onClick={submitdetails}>Submit</button>
             </div>
           </div>
         </div>

@@ -21,8 +21,8 @@ const Profile = () => {
   useEffect(() => {
     const raw = localStorage.getItem("user");
     const parsed = raw ? JSON.parse(raw) : {};
-    const { stdemail, TeacherEmail, role } = parsed;
-    const logoutemail = stdemail || TeacherEmail;
+    const { stdemail, TeacherEmail, adminEmail, role } = parsed;
+    const logoutemail = stdemail || TeacherEmail || adminEmail;
     const logoutrole = role;
 
     if (!raw) return;
@@ -40,9 +40,9 @@ const Profile = () => {
     setRole(savedUser.role || "student");
 
     setProfileData({
-      fullName: savedUser.stdname || savedUser.TeacherName || savedUser.name || "",
-      email: savedUser.stdemail || savedUser.TeacherEmail || savedUser.email || "",
-      mobileNumber: savedUser.stdphoneNumber || savedUser.TeacherPhone || savedUser.mobile || "",
+      fullName: savedUser.stdname || savedUser.TeacherName || savedUser.name || savedUser.adminName || "",
+      email: savedUser.stdemail || savedUser.TeacherEmail || savedUser.email || savedUser.adminEmail || "",
+      mobileNumber: savedUser.stdphoneNumber || savedUser.TeacherPhone || savedUser.mobile || savedUser.adminPhoneNumber || "",
       rollNumber: savedUser.stdrollNumber || "",
       address: savedUser.TeacherAddress || ""
     });
@@ -89,16 +89,12 @@ const Profile = () => {
 
       const parsed = raw ? JSON.parse(raw) : {};
 
-      const { stdemail, TeacherEmail, role } = parsed;
+      const { stdemail, TeacherEmail, adminEmail, role } = parsed;
 
-      const logoutemail = stdemail || TeacherEmail;
+      const logoutemail = stdemail || TeacherEmail || adminEmail;
       const logoutrole = role;
 
-      const res = await axios.post(
-        "http://localhost:2001/api/totallogout/totallogoutDetails",
-        { logoutemail, logoutrole },
-        { withCredentials: true }
-      );
+      const res = await axios.post("http://localhost:2001/api/totallogout/totallogoutDetails", { logoutemail, logoutrole }, { withCredentials: true });
 
       localStorage.clear();
       navigate("/login");
@@ -120,33 +116,34 @@ const Profile = () => {
         <form className="profile-form" onSubmit={handleSave}>
           <div className="input-box">
             <label>Full Name</label>
-            <input type="text" value={profileData.fullName} onChange={handleInputChange('fullName')} />
+            <input type="text" style={{ width: '100%', padding: "12px 14px", textAlign: "left" }} value={profileData.fullName} readOnly onChange={handleInputChange('fullName')} />
           </div>
 
           <div className="input-box">
             <label>Email</label>
-            <input type="email" value={profileData.email} onChange={handleInputChange('email')} />
+            <input type="email" style={{ width: '100%' }} value={profileData.email} readOnly onChange={handleInputChange('email')} />
           </div>
 
           <div className="input-box">
             <label>Mobile</label>
-            <input type="tel" value={profileData.mobileNumber} onChange={handleInputChange('mobileNumber')} />
+            <input type="tel" style={{ width: '100%', padding: "12px 14px" }} value={profileData.mobileNumber} readOnly onChange={handleInputChange('mobileNumber')} />
           </div>
 
-          {role === "teacher" ? (
+          {role === "teacher" && (
             <div className="input-box">
               <label>Address</label>
-              <input type="text" value={profileData.address} onChange={handleInputChange('address')} />
+              <input type="text" style={{ width: '100%', padding: "12px 14px" }} value={profileData.address} readOnly onChange={handleInputChange('address')} />
             </div>
-          ) : (
+          )}
+
+          {role === "student" && (
             <div className="input-box">
               <label>Roll Number</label>
-              <input type="text" value={profileData.rollNumber} onChange={handleInputChange('rollNumber')} />
+              <input type="text" style={{ width: '100%', padding: "12px 14px", textAlign: "left" }} value={profileData.rollNumber} readOnly onChange={handleInputChange('rollNumber')} />
             </div>
           )}
 
           <div className="form-actions">
-            {/* <button type="submit" className="save-btn">Save</button> */}
             <button type="button" className="logout-btn" onClick={handleLogout}>
               Logout
             </button>

@@ -1,0 +1,112 @@
+@media (max-width: 1024px) {
+  .main-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Make images responsive and centered */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Center page content column-wise on small screens */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Constrain and center main blocks */
+  .student-dashboard-wrapper,
+  .student-header-card,
+  .charts-grid-container,
+  .exam-chart-card,
+  .fonderinto,
+  .schoolinfo,
+  .facstucit,
+  .administaation,
+  .login-container,
+  .profile-form-wrapper {
+    width: 100%;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  /* Make charts stack vertically on small screens */
+  .charts-grid-container {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .exam-chart-card {
+    padding: 1rem !important;
+    border-radius: 12px !important;
+  }
+
+  .exam-chart-wrapper {
+    min-height: 180px;
+  }
+
+  .student-header-card {
+    padding: 1rem;
+    flex-direction: column !important;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .dashboard-main-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .nav-container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links-mobile {
+    display: block;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
+
+  .facstucit div {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .student-dashboard-wrapper,
+  .student-header-card,
+  .exam-chart-card {
+    max-width: 100% !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .dashboard-main-title {
+    font-size: 1.25rem !important;
+  }
+
+  .exam-chart-wrapper {
+    min-height: 150px;
+  }
+}

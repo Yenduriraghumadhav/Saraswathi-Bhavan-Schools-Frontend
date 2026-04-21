@@ -65,6 +65,28 @@ input, textarea {
   font-family: inherit;
 }
 
+select {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  background: rgba(248, 250, 252, 0.7);
+  transition: all 0.28s ease;
+  font-family: inherit;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.06);
+  background: white;
+  transform: translateY(-1px);
+}
+
 input:focus, textarea:focus {
   outline: none;
   border-color: #667eea;

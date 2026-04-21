@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Marks.css';
-import Footer from '../../Components/Footer/Footer';
 
 const Marks = () => {
   console.log("Marks component rendering");
@@ -11,18 +11,6 @@ const Marks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const classApiMap = {
-    1: "http://localhost:2001/api/firstclass/Firstclassstudents",
-    2: "http://localhost:2001/api/secondclass/Secondclassstudents",
-    3: "http://localhost:2001/api/thirdclass/Thirdclassstudents",
-    4: "http://localhost:2001/api/fourthclass/fourthclassstudents",
-    5: "http://localhost:2001/api/fifthclass/fifthclassstudents",
-    6: "http://localhost:2001/api/sixthclass/sixthclassstudents",
-    7: "http://localhost:2001/api/seventhclass/seventhclassstudents",
-    8: "http://localhost:2001/api/eighthclass/eighthclassstudents",
-    9: "http://localhost:2001/api/ninthclass/ninthclassstudents",
-    10: "http://localhost:2001/api/tenthclass/tenthclassstudents",
-  };
 
   useEffect(() => {
     fetchStudentData();
@@ -36,13 +24,10 @@ const Marks = () => {
         setLoading(false);
         return;
       }
-
       const user = JSON.parse(storedData);
       setStudentData(user);
-
       const classId = user.class || user.stdclass;
       const rollNumber = user.rollnumber || user.stdrollNumber;
-
       fetchMarks(classId, rollNumber);
     } catch (err) {
       setError('Error reading localStorage data');
@@ -52,42 +37,21 @@ const Marks = () => {
 
   const fetchMarks = async (classId, rollNumber) => {
     try {
-      const dta = localStorage.getItem('user');
-      const parseddata = JSON.parse(dta);
-      const Rollnumber = parseddata.rollnumber || parseddata.stdrollNumber;
       setLoading(true);
-      const apiUrl = classApiMap[classId];
-
-      if (!apiUrl) {
-        setError(`No API found for class ${classId}`);
-        setLoading(false);
-        return; 
-      }
-
-      const response = await fetch(`${apiUrl}?rollNumber=${rollNumber}`, {
-        method: "GET",
-        credentials: "include"
+      const response = await axios.get('http://localhost:2001/api/totalstudentmarks/filteredstudentmarks', {
+        params: { rollNumber: rollNumber, stdclass: classId },
+        withCredentials: true
       });
 
-      const data = await response.json();
-      console.log("API Response :", data);
-
-
-      const studentsArray = data.students || [];
-
-      const student = studentsArray.find(
-        (s) => s.stdRollNumber === rollNumber.toString()
-      );
-
-      console.log("student found :", student);
+      const data = response.data;
+      const student = data?.data || data?.result || data;
 
       if (!student) {
-        setError(`Student not found`);
+        setError('Student not found');
         setLoading(false);
         return;
       }
 
-      console.log("Fetched marks data:", student);
       setMarksData(student);
 
     } catch (err) {
@@ -98,6 +62,16 @@ const Marks = () => {
     }
   };
 
+  const calculateExamTotals = (exam) => {
+    const subjects = ['telugu', 'hindi', 'english', 'maths', 'science', 'social'];
+    const examMarks = marksData?.result?.[exam] || {};
+    const scores = subjects.map(s => Number(examMarks[s] ?? 0));
+    const total = scores.reduce((a, b) => a + b, 0);
+    const maxTotal = subjects.length * 100;
+    const percentage = maxTotal > 0 ? ((total / maxTotal) * 100).toFixed(1) : '0.0';
+    return { total, percentage };
+  };
+
   const getExamStatus = (examData) => {
     if (!examData) return "pending";
 
@@ -106,7 +80,7 @@ const Marks = () => {
       : "pending";
   };
 
-  
+
   const getAvailableExams = (result) => {
     if (!result) return [];
 
@@ -128,7 +102,7 @@ const Marks = () => {
     const subjects = ['telugu', 'hindi', 'english', 'maths', 'science', 'social'];
     const exams = getAvailableExams(marksData.result);
 
-    
+
     if (exams.length === 0) {
       return (
         <div className="no-results">
@@ -138,37 +112,7 @@ const Marks = () => {
       );
     }
 
-    const calculateMidMetrics = () => {
-      const midMarks = marksData?.result?.mid;
-
-      if (!midMarks) {
-        return { total: 0, average: 0, feedback: "Pending", feedbackClass: "" };
-      }
-
-      const scores = Object.values(midMarks).filter(score => typeof score === 'number');
-      const total = scores.reduce((acc, score) => acc + score, 0);
-      const average = scores.length > 0 ? (total / scores.length).toFixed(1) : 0;
-
-      let feedback = 'Pending';
-      let feedbackClass = '';
-
-      if (getExamStatus(midMarks) === 'completed') {
-        if (average >= 80) {
-          feedback = 'Good';
-          feedbackClass = 'feedback-good';
-        } else if (average >= 50) {
-          feedback = 'Average';
-          feedbackClass = 'feedback-average';
-        } else {
-          feedback = 'Bad';
-          feedbackClass = 'feedback-bad';
-        }
-      }
-
-      return { total, average, feedback, feedbackClass };
-    };
-
-    const metrics = calculateMidMetrics();
+    
 
     return (
       <div className="marks-page-wrapper">
@@ -197,7 +141,7 @@ const Marks = () => {
               <tbody>
                 {subjects.map(subject => (
                   <tr key={subject}>
-                    <td>{subject}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{subject}</td>
                     {exams.map(exam => (
                       <td key={exam}>
                         {marksData?.result?.[exam]?.[subject] ?? "-"}
@@ -205,50 +149,45 @@ const Marks = () => {
                     ))}
                   </tr>
                 ))}
+                {/* Totals row */}
+                <tr>
+                  <td><strong>Total</strong></td>
+                  {exams.map(exam => {
+                    const { total } = calculateExamTotals(exam);
+                    return <td key={exam}><strong>{total}</strong></td>;
+                  })}
+                </tr>
+                <tr>
+                  <td><strong>Percentage</strong></td>
+                  {exams.map(exam => {
+                    const { percentage } = calculateExamTotals(exam);
+                    return <td key={exam}><strong>{percentage}%</strong></td>;
+                  })}
+                </tr>
               </tbody>
             </table>
           </div>
 
-        
-          {exams.includes("mid") && (
-            <div className="scorecard">
-              <div className="scorecard-header">
-                <h4>Mid-Term Analysis</h4>
-                <span className={`status-badge ${metrics.feedbackClass}`}>
-                  {metrics.feedback}
-                </span>
-              </div>
-
-              <div className="scorecard-body">
-                <div className="stat-box">
-                  <span>Total: </span>
-                  <span>{metrics.total} / 600</span>
-                </div>
-                <div className="stat-box">
-                  <span>Average: </span>
-                  <span>{metrics.average}%</span>
-                </div>
-              </div>
-            </div>
-          )}
 
           
-          <div className="progress-card">
-            <h4>Exam Progress</h4>
-            <div className="progress-list">
-              {exams.map((exam) => (
-                <div className="progress-item" key={exam}>
-                  <span>{exam}</span>
-                  <span className={`status-icon ${getExamStatus(marksData?.result?.[exam])}`}>
-                    {getExamStatus(marksData?.result?.[exam]) === 'completed'
-                      ? ' : completed'
-                      : ' : Pending'}
-                  </span>
-                </div>
-              ))}
+
+          <div style={{ display: 'flex', gap: 12, marginTop: 16, alignItems: 'center' }}>
+            <div className="progress-card">
+              <h4>Exam Progress</h4>
+              <div className="progress-list">
+                {exams.map((exam) => (
+                  <div className="progress-item" key={exam}>
+                    <span style={{ textTransform: 'capitalize' }}>{exam}</span>
+                    <span className={`status-icon ${getExamStatus(marksData?.result?.[exam])}`}>
+                      {getExamStatus(marksData?.result?.[exam]) === 'completed'
+                        ? ' : completed'
+                        : ' : Pending'}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     );

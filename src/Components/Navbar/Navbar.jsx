@@ -44,25 +44,37 @@ const Navbar = () => {
 
           <ul className={isMobile ? "nav-links-mobile" : "nav-links"} onClick={() => setIsMobile(false)}>
 
-            {(role === 'admin' || role === 'student' || role === "teacher") && (
+            {(role === 'admin' || role === "teacher") && (
               <li><Link to="/dashboard" className="nav-item">Dashboard</Link></li>
             )}
 
-            {(role === 'admin' || role === 'student') && (
+            {role === 'student' && (
+              <li><Link to="/studentdashboard" className="nav-item">Dashboard</Link></li>
+            )}
+
+            {(role === "admin") && (
+              <li><Link to="/teacherSignUppage" className="nav-item">Add-Teachers</Link></li>
+            )}
+
+            {(role === "admin") && (
+              <li><Link to="/profiledetails" className="nav-item">Add-Students</Link></li>
+            )}
+
+            {(role === 'student') && (
               <li><Link to="/marks" className="nav-item">Marks</Link></li>
             )}
 
-            {(role === 'admin' || role === 'teacher') && (
-              <li><Link to="/addingmarks" className="nav-item">Adding Marks</Link></li>
+            {(role === 'admin') && (
+              <li><Link to="/adminaddingmarks" className="nav-item">Adding Marks</Link></li>
             )}
 
-            {role === 'admin' && (
-              <li><Link to="/payments" className="nav-item">Payments</Link></li>
+            {(role === 'teacher') && (
+              <li><Link to="/teachermarksadding" className="nav-item">Adding Marks</Link></li>
             )}
 
             <li><Link to="/aboutus" className="nav-item">About Us</Link></li>
 
-            {(role === 'admin' || role !== 'student' && role !== 'teacher') && (
+            {!role && (
               <li>
                 <button onClick={handleLogout} className="nav-item-logout" style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: '0 15px' }}>
                   Logout
@@ -73,7 +85,7 @@ const Navbar = () => {
               <li><Link to="/profile" className="nav-item">Profile</Link></li>
             )}
 
-            {(role === 'admin' || role !== 'student' && role !== 'teacher') && (
+            {!role && (
               <li>
                 <Link to="/contactus" className="nav-item btn-contact">Contact Us</Link>
               </li>

@@ -4,26 +4,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import Marks from './Pages/Marks/Marks';
-import Payments from './Pages/Payments/Payments';
 import Profile from './Pages/Profile/Profile';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import Navbar from './Components/Navbar/Navbar';
 import ProfileFormDetails from './Components/ProfileFormDetails/ProfileFormDetails';
-import RollnumberCheck from './Components/ProfileFormDetails/RollnumberCheck';
 import Login from './Components/Loginpage/Login';
 import Dashbord from './Components/Dashboard/Dashboard';
 import TeacherDetails from './Components/TeachersDetails/TeacherDetails';
-import TeacherMarksAdding from './Pages/Teacher-marks-adding/Teacher-marks-adding';
+import Adminmarksadding from './Pages/Admin-marks-adding/Admin-marks-adding';
 import Home from './Pages/Home/Home';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import Footer from './Components/Footer/Footer';
 import ForgotPassword from './Components/Forgot-Password/Forgot-password';
 import ForgotPasswordForTeachers from './Components/Forgotforteachers/Forgotforteachers';
+import Studentdashboard from './Components/Dashboard/Studentdashboard';
+import './styles/responsive.css';
+import Teachermarksaddingpage from "./Pages/Teachermarksaddingpage/Teachermarksaddingpage";
+import Adminlogin from './Components/Loginpage/Adminlogin';
 
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const hideNavbarRoutes = ['/rollcheck', '/login', '/profiledetails', "/teacherSignUppage", "/forgot-password", "/forgot-password-for-teachers"];
+  const hideNavbarRoutes = ['/login', "/forgot-password", "/forgot-password-for-teachers", "/adminlogin"];
   const showNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const AppContent = () => {
     }
   }, [location.pathname, navigate]);
 
+
   return (
     <>
       {showNavbar && <Navbar />}
@@ -50,18 +53,19 @@ const AppContent = () => {
           <Route path='/contactus' element={<ContactUs />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/forgot-password-for-teachers' element={<ForgotPasswordForTeachers />} />
+          <Route path='/adminlogin' element={<Adminlogin />}></Route>
 
           <Route
             path='/dashboard'
-            element={<ProtectedRoute allowedRoles={['admin', 'teacher', 'student']}><Dashbord /></ProtectedRoute>}
+            element={<ProtectedRoute allowedRoles={['admin', 'teacher']}><Dashbord /></ProtectedRoute>}
           />
           <Route
             path='/marks'
             element={<ProtectedRoute allowedRoles={['admin', 'student']}><Marks /></ProtectedRoute>}
           />
           <Route
-            path='/payments'
-            element={<ProtectedRoute allowedRoles={['admin']}><Payments /></ProtectedRoute>}
+            path='/studentdashboard'
+            element={<ProtectedRoute allowedRoles={['student']}><><Studentdashboard /><Home /></></ProtectedRoute>}
           />
           <Route
             path='/profile'
@@ -69,19 +73,19 @@ const AppContent = () => {
           />
           <Route
             path='/profiledetails'
-            element={<ProtectedRoute allowedRoles={['admin', 'teacher']}><ProfileFormDetails /></ProtectedRoute>}
-          />
-          <Route
-            path='/rollcheck'
-            element={<ProtectedRoute allowedRoles={['admin', 'teacher']}><RollnumberCheck /></ProtectedRoute>}
+            element={<ProtectedRoute allowedRoles={['admin']}><ProfileFormDetails /></ProtectedRoute>}
           />
           <Route
             path="/teacherSignUppage"
             element={<ProtectedRoute allowedRoles={['admin']}><TeacherDetails /></ProtectedRoute>}
           />
           <Route
-            path='/addingmarks'
-            element={<ProtectedRoute allowedRoles={['admin', 'teacher']}><TeacherMarksAdding /></ProtectedRoute>}
+            path='/adminaddingmarks'
+            element={<ProtectedRoute allowedRoles={['admin']}><Adminmarksadding /></ProtectedRoute>}
+          />
+          <Route
+            path='/teachermarksadding'
+            element={<ProtectedRoute allowedRoles={['teacher']}><Teachermarksaddingpage /></ProtectedRoute>}
           />
         </Routes>
       </div>

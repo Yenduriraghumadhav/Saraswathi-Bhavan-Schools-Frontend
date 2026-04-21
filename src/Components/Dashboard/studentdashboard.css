@@ -1,0 +1,171 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'); */
+
+.student-dashboard-wrapper {
+    padding: 1.5rem 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    background-color: #f8fafc;
+    min-height: calc(100vh - 70px);
+}
+
+.student-dashboard-state-msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40vh;
+    font-size: 1.25rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.error-msg {
+    color: #ef4444;
+}
+
+.dashboard-main-title {
+    font-size: 2.25rem;
+    color: #0f172a;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+/* ── Student Header Card ── */
+.student-header-card {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+    color: white;
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    margin-bottom: 3rem;
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.25),
+                0 10px 10px -5px rgba(99, 102, 241, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.student-header-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+    transform: translate(30%, -30%);
+    border-radius: 50%;
+}
+
+.student-header-info {
+    position: relative;
+    z-index: 1;
+}
+
+.student-header-info h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.student-header-info p {
+    margin: 0;
+    font-size: 1.15rem;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+/* ── Charts Grid ── */
+.charts-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.exam-chart-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+                0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s ease;
+}
+
+.exam-chart-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.08),
+                0 15px 15px -5px rgba(0, 0, 0, 0.04);
+}
+
+.exam-chart-title {
+    color: #1e293b;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 1.25rem;
+    position: relative;
+}
+
+.exam-chart-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: #6366f1;
+}
+
+.exam-chart-wrapper {
+    width: 100%;
+    min-height: 160px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Center placeholder messages inside exam cards */
+.exam-chart-wrapper .student-dashboard-state-msg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    color: #64748b;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .charts-grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .student-header-card {
+        padding: 1.5rem;
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .dashboard-main-title {
+        font-size: 1.8rem;
+    }
+
+    .exam-chart-card {
+        padding: 1.5rem 1rem;
+        min-height: auto;
+    }
+}

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import "./teacher-marks-adding.css";
+import "./admin-marks-adding.css";
 
 const classApiMap = {
     firstclass: "http://localhost:2001/api/firstclass/Firstclassstudents",
@@ -33,7 +33,7 @@ const subjects = ["maths", "science", "english", "social", "hindi", "telugu"];
 const TeacherMarksAdding = () => {
     const [selectedClass, setSelectedClass] = useState(null);
     const [resultType, setresultType] = useState("");
-    const [operation, setOperation] = useState("post"); // "post" or "put"
+    const [operation, setOperation] = useState("post"); 
     const [formData, setFormData] = useState({
         stdName: "",
         stdRollNumber: "",
