@@ -21,8 +21,8 @@ const Profile = () => {
   useEffect(() => {
     const raw = localStorage.getItem("user");
     const parsed = raw ? JSON.parse(raw) : {};
-    const { stdemail, TeacherEmail, adminEmail, role } = parsed;
-    const logoutemail = stdemail || TeacherEmail || adminEmail;
+    const { stdemail, TeacherEmail, adminEmail, email, role } = parsed;
+    const logoutemail = stdemail || TeacherEmail || adminEmail || email;
     const logoutrole = role;
 
     if (!raw) return;
@@ -89,9 +89,9 @@ const Profile = () => {
 
       const parsed = raw ? JSON.parse(raw) : {};
 
-      const { stdemail, TeacherEmail, adminEmail, role } = parsed;
+      const { stdemail, TeacherEmail, adminEmail, email, role } = parsed;
 
-      const logoutemail = stdemail || TeacherEmail || adminEmail;
+      const logoutemail = stdemail || TeacherEmail || adminEmail || email;
       const logoutrole = role;
 
       const res = await axios.post("http://localhost:2001/api/totallogout/totallogoutDetails", { logoutemail, logoutrole }, { withCredentials: true });
